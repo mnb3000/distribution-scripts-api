@@ -3,12 +3,27 @@ import os
 
 from dotenv import load_dotenv
 from fastapi import FastAPI, UploadFile, File, HTTPException, Body
+from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import StreamingResponse
 
 from app.report_split import split_csv
 from app.report_sum import report_sum
 
 app = FastAPI()
+
+origins = [
+    "https://distribution.mnb3000.ml",
+    "http://localhost:5173",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 log_level = os.getenv("LOGLEVEL", default="INFO")
 logging.basicConfig(level=os.getenv("LOGLEVEL", default="INFO"))
 logger = logging.getLogger(__name__)
