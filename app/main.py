@@ -2,7 +2,7 @@ import logging
 import os
 
 from dotenv import load_dotenv
-from fastapi import FastAPI, UploadFile, File, HTTPException
+from fastapi import FastAPI, UploadFile, File, HTTPException, Body
 from starlette.responses import StreamingResponse
 
 from app.report_split import split_csv
@@ -16,7 +16,12 @@ load_dotenv()
 
 
 @app.post("/split", response_class=StreamingResponse)
-def split_route(file: UploadFile = File(...), prefix: str = "report", artist_column: str = "Artist", encoding: str = "utf-8"):
+def split_route(
+        file: UploadFile = File(...),
+        prefix: str = Body(default="report"),
+        artist_column: str = Body(default="Artist"),
+        encoding: str = Body(default="utf-8")
+):
     if not file.filename:
         raise HTTPException(status_code=422, detail="File should not be empty")
     if file.content_type != 'text/csv':
@@ -35,9 +40,9 @@ def split_route(file: UploadFile = File(...), prefix: str = "report", artist_col
 @app.post("/sum", response_model=dict)
 def sum_route(
         file: UploadFile = File(...),
-        artist_column: str = "Artist",
-        net_revenue_column: str = "Net Revenue in USD",
-        encoding: str = "utf-8"
+        artist_column: str = Body(default="Artist"),
+        net_revenue_column: str = Body(default="Net Revenue in USD"),
+        encoding: str = Body(default="utf-8")
 ):
     if not file.filename:
         raise HTTPException(status_code=422, detail="File should not be empty")
