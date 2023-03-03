@@ -1,4 +1,7 @@
+import logging
 import pandas as pd
+
+logger = logging.getLogger(__name__)
 
 
 def report_sum(file, artist_column="Artist", net_revenue_column="Net Revenue in USD", encoding="utf-8"):

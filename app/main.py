@@ -43,4 +43,6 @@ def sum_route(
         raise HTTPException(status_code=422, detail="File should not be empty")
     if file.content_type != 'text/csv':
         raise HTTPException(status_code=422, detail="File should be csv")
+    logger.info(f"Received sum request with filename: {file.filename}, artist_column: {artist_column}, "
+                f"net_revenue_column: {net_revenue_column}, encoding: {encoding}")
     return report_sum(file.file, artist_column, net_revenue_column, encoding)
