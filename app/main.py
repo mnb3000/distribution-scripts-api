@@ -12,7 +12,7 @@ from app.report_sum import report_sum
 app = FastAPI()
 
 origins = [
-    "https://distribution.mnb3000.ml",
+    "https://distro.myk.digital",
     "http://localhost:5173",
 ]
 
